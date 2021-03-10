@@ -7,17 +7,17 @@ public class Transaction {
    private UUID id;
    private String title;
    private Double value;
-   private String transactionType;
+   private String type;
 
 
    public Transaction() {
    }
 
-    public Transaction(UUID id, String title, Double value, String transactionType) {
+    public Transaction(UUID id, String title, Double value, String type) {
         this.id = id;
         this.title = title;
         this.value = value;
-        this.transactionType = transactionType;
+        this.type = type;
     }
 
     public UUID getId() {
@@ -44,12 +44,12 @@ public class Transaction {
         this.value = value;
     }
 
-    public String getTransactionType() {
-        return transactionType;
+    public String getType() {
+        return type;
     }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Transaction {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", value=" + value +
-                ", transactionType='" + transactionType + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

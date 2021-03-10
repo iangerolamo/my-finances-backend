@@ -1,27 +1,30 @@
 package com.ig.myfinancesbackend.models;
 
+import java.util.UUID;
+
 public class Transaction {
 
-    private String id;
-    private String title;
-    private String transactionType;
-    private String categoryId;
+   private UUID id;
+   private String title;
+   private Double value;
+   private String transactionType;
 
-    public Transaction() {
-    }
 
-    public Transaction(String id, String title, String transactionType, String categoryId) {
+   public Transaction() {
+   }
+
+    public Transaction(UUID id, String title, Double value, String transactionType) {
         this.id = id;
         this.title = title;
+        this.value = value;
         this.transactionType = transactionType;
-        this.categoryId = categoryId;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -33,6 +36,14 @@ public class Transaction {
         this.title = title;
     }
 
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
     public String getTransactionType() {
         return transactionType;
     }
@@ -41,12 +52,13 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", value=" + value +
+                ", transactionType='" + transactionType + '\'' +
+                '}';
     }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
-
 }

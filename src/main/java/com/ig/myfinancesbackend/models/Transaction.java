@@ -1,10 +1,19 @@
 package com.ig.myfinancesbackend.models;
 
-import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 
-public class Transaction {
 
-   private UUID id;
+@Entity
+public class Transaction implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Integer id;
    private String title;
    private Double value;
    private String type;
@@ -13,18 +22,18 @@ public class Transaction {
    public Transaction() {
    }
 
-    public Transaction(UUID id, String title, Double value, String type) {
+    public Transaction(Integer id, String title, Double value, String type) {
         this.id = id;
         this.title = title;
         this.value = value;
         this.type = type;
     }
 
-    public UUID getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -51,6 +60,7 @@ public class Transaction {
     public void setType(String type) {
         this.type = type;
     }
+    
 
     @Override
     public String toString() {

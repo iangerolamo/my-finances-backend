@@ -15,8 +15,11 @@ import java.util.List;
 @RequestMapping(value="/transactions")
 public class TransactionController {
 
-    @Autowired
-    private TransactionService service;
+    private final TransactionService service;
+
+    public TransactionController(TransactionService service) {
+        this.service = service;
+    }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id) {

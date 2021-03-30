@@ -58,4 +58,9 @@ public class UserService {
         repository.deleteById(id);
     }
 
+    public Optional<User> getById(Integer id) {
+        return repository.findById(id);
+    }
+
+
 }

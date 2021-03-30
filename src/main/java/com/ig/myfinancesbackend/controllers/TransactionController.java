@@ -1,13 +1,15 @@
 package com.ig.myfinancesbackend.controllers;
 
+import com.ig.myfinancesbackend.dto.TransactionDTO;
 import com.ig.myfinancesbackend.entities.Transaction;
+import com.ig.myfinancesbackend.entities.User;
+import com.ig.myfinancesbackend.entities.enums.TypeTransaction;
+import com.ig.myfinancesbackend.exceptions.RuleBusinessException;
 import com.ig.myfinancesbackend.services.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ig.myfinancesbackend.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,21 +17,56 @@ import java.util.List;
 @RequestMapping(value="/transactions")
 public class TransactionController {
 
-    private final TransactionService service;
+    private final TransactionService transactionService;
 
-    public TransactionController(TransactionService service) {
-        this.service = service;
+    private final UserService userService;
+
+    public TransactionController(TransactionService transactionService, UserService userService) {
+        this.transactionService = transactionService;
+        this.userService = userService;
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id) {
-        Transaction obj = service.find(id);
+        Transaction obj = transactionService.find(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Transaction>> findAll() {
-        List<Transaction> list = service.findAll();
+        List<Transaction> list = transactionService.findAll();
         return ResponseEntity.ok().body(list);
     }
+
+    @PostMapping
+    private ResponseEntity save(@RequestBody TransactionDTO transactionDTO) {
+        try {
+            Transaction entity = toConvert(transactionDTO);
+            entity = transactionService.save(entity);
+            return new ResponseEntity<>(entity, HttpStatus.CREATED);
+        } catch (RuleBusinessException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private Transaction toConvert(TransactionDTO transactionDTO) {
+        Transaction transaction = new Transaction();
+        transaction.setId(transactionDTO.getId());
+        transaction.setDescription(transactionDTO.getDescription());
+        transaction.setMounth(transactionDTO.getMounth());
+        transaction.setYear(transactionDTO.getYear());
+        transaction.setValue(transactionDTO.getValue());
+
+        User user = userService
+                .getById(transactionDTO.getUser())
+                .orElseThrow(() -> new RuleBusinessException("User not found for informed id"));
+
+        transaction.setUser(user);
+
+        transaction.setType(TypeTransaction.valueOf(transactionDTO.getType()));
+
+
+        return transaction;
+    }
+
 }

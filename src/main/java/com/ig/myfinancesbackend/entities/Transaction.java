@@ -4,7 +4,7 @@ import com.ig.myfinancesbackend.entities.enums.TypeTransaction;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +25,10 @@ public class Transaction {
    private Integer mounth;
 
    private Integer year;
+
+   @ManyToOne
+   @JoinColumn(name = "id_user")
+   private User user;
 
    private double value;
 

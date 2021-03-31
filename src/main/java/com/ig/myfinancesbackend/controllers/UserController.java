@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +26,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    // obter todos os usuários
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<User>> findAll() {
         List<User> list = userService.findAll();
         return ResponseEntity.ok().body(list);
     }
+
+    // autenticar usuário
 
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(@RequestBody UserDTO userDTO) {
@@ -42,6 +45,8 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // salvar usuário
 
     @PostMapping
     public ResponseEntity save(@RequestBody UserDTO userDTO) {
@@ -60,11 +65,15 @@ public class UserController {
         }
     }
 
+    // deletar usuário
+
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // obter saldo do usuário
 
     @GetMapping("{id}/balance")
     public ResponseEntity getBalance(@PathVariable("id") Integer id) {

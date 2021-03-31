@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -77,5 +78,15 @@ public class TransactionService {
             outcome = BigDecimal.ZERO;
         }
         return income.subtract(outcome);
+    }
+
+    public Optional<Transaction> getById(Integer id) {
+        return repository.findById(id);
+    }
+
+    @Transactional
+    public void delete(Transaction transaction) {
+        Objects.requireNonNull(transaction.getId());
+        repository.delete(transaction);
     }
 }

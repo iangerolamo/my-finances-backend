@@ -26,17 +26,23 @@ public class TransactionController {
         this.userService = userService;
     }
 
+    // obter transação por id
+
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id) {
         Transaction obj = transactionService.find(id);
         return ResponseEntity.ok().body(obj);
     }
 
+    // obter todas as transações
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Transaction>> findAll() {
         List<Transaction> list = transactionService.findAll();
         return ResponseEntity.ok().body(list);
     }
+
+    // salvar transação
 
     @PostMapping
     private ResponseEntity save(@RequestBody TransactionDTO transactionDTO) {
@@ -47,6 +53,17 @@ public class TransactionController {
         } catch (RuleBusinessException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // deletar transação
+
+    @DeleteMapping("{id}")
+    private ResponseEntity delete(@PathVariable("id") Integer id) {
+        return transactionService.getById(id).map(entity -> {
+            transactionService.delete(entity);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }).orElseGet(() ->
+                new ResponseEntity("Transaction not found.", HttpStatus.BAD_REQUEST));
     }
 
     private Transaction toConvert(TransactionDTO transactionDTO) {

@@ -33,7 +33,6 @@ public class UserService {
         if (!user.get().getPassword().equals(password)) {
             throw new AuthenticationError("Invalid password");
         }
-
         return user.get();
     }
 
@@ -59,6 +58,7 @@ public class UserService {
     }
 
     public Optional<User> getById(Integer id) {
+
         return repository.findById(id);
     }
 

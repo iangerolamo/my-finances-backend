@@ -4,20 +4,26 @@ import com.ig.myfinancesbackend.dto.UserDTO;
 import com.ig.myfinancesbackend.entities.User;
 import com.ig.myfinancesbackend.exceptions.AuthenticationError;
 import com.ig.myfinancesbackend.exceptions.RuleBusinessException;
+import com.ig.myfinancesbackend.services.TransactionService;
 import com.ig.myfinancesbackend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/user")
 public class UserController {
 
     private final UserService userService;
+    private final TransactionService transactionService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TransactionService transactionService) {
+        this.transactionService = transactionService;
         this.userService = userService;
     }
 
@@ -58,5 +64,17 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("{id}/balance")
+    public ResponseEntity getBalance(@PathVariable("id") Integer id) {
+        Optional<User> user = userService.getById(id);
+
+        if (user.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        BigDecimal balance = transactionService.getBalancePerUser(id);
+        return ResponseEntity.ok(balance);
     }
 }

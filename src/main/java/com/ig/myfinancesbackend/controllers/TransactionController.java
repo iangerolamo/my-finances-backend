@@ -62,11 +62,7 @@ public class TransactionController {
                 .orElseThrow(() -> new RuleBusinessException("User not found for informed id"));
 
         transaction.setUser(user);
-
         transaction.setType(TypeTransaction.valueOf(transactionDTO.getType()));
-
-
         return transaction;
     }
-
 }

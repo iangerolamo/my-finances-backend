@@ -4,6 +4,7 @@ import com.ig.myfinancesbackend.entities.enums.TypeTransaction;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 @NoArgsConstructor
@@ -35,7 +36,7 @@ public class Transaction {
    private User user;
 
    @Column(name = "value")
-   private double value;
+   private BigDecimal value;
 
    @Column(name = "type")
    @Enumerated(value = EnumType.STRING)

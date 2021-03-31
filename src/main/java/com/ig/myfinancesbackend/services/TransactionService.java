@@ -1,6 +1,7 @@
 package com.ig.myfinancesbackend.services;
 
 import com.ig.myfinancesbackend.entities.Transaction;
+import com.ig.myfinancesbackend.entities.enums.TypeTransaction;
 import com.ig.myfinancesbackend.exceptions.RuleBusinessException;
 import com.ig.myfinancesbackend.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,9 @@ public class TransactionService {
             throw new RuleBusinessException("Please provide a valid description.");
         }
 
-//        if (transaction.getMounth() == null || transaction.getMounth() < 1 || transaction.getMounth() > 12) {
-//            throw new RuleBusinessException("Please provide a valid mounth");
-//        }
+        if (transaction.getMounth() == null || transaction.getMounth() < 1 || transaction.getMounth() > 12) {
+            throw new RuleBusinessException("Please provide a valid mounth");
+        }
 
         if (transaction.getYear() == null || transaction.getYear().toString().length() != 4) {
             throw new RuleBusinessException("Please provide a valid year");
@@ -53,12 +54,28 @@ public class TransactionService {
             throw new RuleBusinessException("Please provide a valid user");
         }
 
-        if (transaction.getValue() < 0) {
+        if (transaction.getValue() == null || transaction.getValue().compareTo(BigDecimal.ZERO) < 1) {
             throw new RuleBusinessException("Please provide a valid value");
         }
 
-//        if (transaction.getType() == null) {
-//            throw new RuleBusinessException("Please provide a transaction type.");
-//        }
+        if (transaction.getType() == null) {
+            throw new RuleBusinessException("Please provide a transaction type.");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public BigDecimal getBalancePerUser(Integer id) {
+
+        BigDecimal income = repository.getBalancePerUser(id, TypeTransaction.INCOME);
+        BigDecimal outcome = repository.getBalancePerUser(id, TypeTransaction.OUTCOME);
+
+        if (income == null) {
+            income = BigDecimal.ZERO;
+        }
+
+        if (outcome == null) {
+            outcome = BigDecimal.ZERO;
+        }
+        return income.subtract(outcome);
     }
 }

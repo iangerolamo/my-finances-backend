@@ -73,7 +73,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    // obter saldo do usuário
+    // obter saldo total do usuário
 
     @GetMapping("{id}/balance")
     public ResponseEntity getBalance(@PathVariable("id") Integer id) {

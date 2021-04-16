@@ -86,4 +86,32 @@ public class UserController {
         BigDecimal balance = transactionService.getBalancePerUser(id);
         return ResponseEntity.ok(balance);
     }
+
+    // obter saldo de entrada do usuário
+
+    @GetMapping("{id}/income")
+    public ResponseEntity getIncome(@PathVariable("id") Integer id) {
+        Optional<User> user = userService.getById(id);
+
+        if (user.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        BigDecimal income = transactionService.getIncomePerUser(id);
+        return ResponseEntity.ok(income);
+    }
+
+    // obter saldo de saída do usuário
+
+    @GetMapping("{id}/outcome")
+    public ResponseEntity getOutcome(@PathVariable("id") Integer id) {
+        Optional<User> user = userService.getById(id);
+
+        if (user.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        BigDecimal outcome = transactionService.getOutcomePerUser(id);
+        return ResponseEntity.ok(outcome);
+    }
 }

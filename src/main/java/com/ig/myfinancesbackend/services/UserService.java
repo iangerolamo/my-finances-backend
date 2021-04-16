@@ -18,10 +18,14 @@ public class UserService {
         this.repository = repository;
     }
 
+    // obter todos os usuários
+
     public List<User> findAll() {
 
         return repository.findAll();
     }
+
+    // autenticar usuário
 
     public User authenticate(String email, String password) {
         Optional<User> user = repository.findByEmail(email);
@@ -36,10 +40,14 @@ public class UserService {
         return user.get();
     }
 
+    // salvar usuário
+
     public User saveUser(User user) {
         validateEmail(user.getEmail());
         return repository.save(user);
     }
+
+    // verificar e-mail do usuário
 
     public void validateEmail(String email) {
         boolean exist = repository.existsByEmail(email);
@@ -48,14 +56,21 @@ public class UserService {
         }
     }
 
+    // verificar usuário por id
+
     public void find(Integer id) {
+
         Optional<User> obj = repository.findById(id);
     }
+
+    // deletar usuário
 
     public void delete(Integer id) {
         find(id);
         repository.deleteById(id);
     }
+
+    // obter usuário por id
 
     public Optional<User> getById(Integer id) {
 

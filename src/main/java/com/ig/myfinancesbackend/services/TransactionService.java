@@ -26,10 +26,14 @@ public class TransactionService {
         return obj.orElse(null);
     }
 
+    // obter todas as transações
+
     public List<Transaction> findAll() {
 
         return repository.findAll();
     }
+
+    // salvar uma transação
 
     @Transactional
     public Transaction save(Transaction transaction) {
@@ -80,7 +84,30 @@ public class TransactionService {
         return income.subtract(outcome);
     }
 
+    @Transactional(readOnly = true)
+    public BigDecimal getIncomePerUser(Integer id) {
+
+        BigDecimal income = repository.getBalancePerUser(id, TypeTransaction.INCOME);
+        if (income == null) {
+            income = BigDecimal.ZERO;
+        }
+
+        return income;
+    }
+
+    @Transactional(readOnly = true)
+    public BigDecimal getOutcomePerUser(Integer id) {
+
+        BigDecimal outcome = repository.getBalancePerUser(id, TypeTransaction.OUTCOME);
+        if (outcome == null) {
+            outcome = BigDecimal.ZERO;
+        }
+
+        return outcome;
+    }
+
     public Optional<Transaction> getById(Integer id) {
+
         return repository.findById(id);
     }
 

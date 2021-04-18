@@ -29,9 +29,9 @@ public class TransactionController {
     // obter transação por id
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> find(@PathVariable Integer id) {
-        Transaction obj = transactionService.find(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<List<Transaction>> find(@PathVariable Integer id) {
+        List<Transaction> list = transactionService.getTransactionByUser(id);
+        return ResponseEntity.ok().body(list);
     }
 
     // obter todas as transações

@@ -33,6 +33,12 @@ public class TransactionService {
         return repository.findAll();
     }
 
+    // obter todas as transações de acordo com o id informado
+
+    public List<Transaction> getTransactionByUser(Integer id) {
+        return repository.getTransactionByUserId(id);
+    }
+
     // salvar uma transação
 
     @Transactional
